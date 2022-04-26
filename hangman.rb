@@ -35,20 +35,21 @@ class Game
         break
       end
 
-      puts play_round
+      play_round
     end
   end
 
   def play_round
     guess = player_guess
     @guesses_left -= 1 unless correct_guess?(guess)
+    puts "guesses left #{@guesses_left}"
   end
 
   def player_guess
     loop do
       puts 'Guess a letter'
       guess = gets.chomp
-      if guess.length == 1 && @available_letters.inclue?(guess)
+      if guess.length == 1 && @available_letters.include?(guess)
         @available_letters.delete(guess)
         return guess
       end
@@ -57,8 +58,13 @@ class Game
 
   def correct_guess?(guess)
     @guessed_letters.append(guess)
-    @mystery_word.inclue?(guess)
+    @mystery_word.include?(guess)
   end
+
+  def display_results
+    puts "guesses left #{@guesses_left}"
+    puts @mystery_word.
+    end
 end
 
 game = Game.new
