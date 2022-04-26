@@ -17,6 +17,8 @@ class Game
   def load_new_game
     @guesses_left = @max_guesses
     @mystery_word = generate_new_word
+    @available_letters = ('a'..'z').to_a
+    @guessed_letters = []
   end
 
   def generate_new_word
@@ -32,21 +34,30 @@ class Game
         puts 'Game Over!'
         break
       end
-      @guesses_left -= 1
+
       puts play_round
     end
   end
 
   def play_round
-    player_guess
+    guess = player_guess
+    @guesses_left -= 1 unless correct_guess?(guess)
   end
 
   def player_guess
     loop do
       puts 'Guess a letter'
       guess = gets.chomp
-      return guess if guess.length == 1 && guess.match?(/[[:alpha:]]/)
+      if guess.length == 1 && @available_letters.inclue?(guess)
+        @available_letters.delete(guess)
+        return guess
+      end
     end
+  end
+
+  def correct_guess?(guess)
+    @guessed_letters.append(guess)
+    @mystery_word.inclue?(guess)
   end
 end
 
