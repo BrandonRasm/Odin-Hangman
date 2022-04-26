@@ -15,9 +15,8 @@ class Game
   end
 
   def load_new_game
-    @guesses = @max_guesses
+    @guesses_left = @max_guesses
     @mystery_word = generate_new_word
-    puts @mystery_word
   end
 
   def generate_new_word
@@ -26,6 +25,30 @@ class Game
       return word if word.length >= 5 && word.length <= 12
     end
   end
+
+  def play
+    loop do
+      if @guesses_left.zero?
+        puts 'Game Over!'
+        break
+      end
+      @guesses_left -= 1
+      puts play_round
+    end
+  end
+
+  def play_round
+    player_guess
+  end
+
+  def player_guess
+    loop do
+      puts 'Guess a letter'
+      guess = gets.chomp
+      return guess if guess.length == 1 && guess.match?(/[[:alpha:]]/)
+    end
+  end
 end
 
 game = Game.new
+game.play
