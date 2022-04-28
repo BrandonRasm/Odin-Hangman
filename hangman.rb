@@ -41,8 +41,9 @@ class Game
 
   def play_round
     guess = player_guess
-    @guesses_left -= 1 unless correct_guess?(guess)
-    display_results
+    @guessed_letters.append(guess)
+    @guesses_left -= 1 unless @mystery_word.include?(guess)
+    display_results(@mystery_word.include?(guess))
   end
 
   def player_guess
@@ -56,12 +57,9 @@ class Game
     end
   end
 
-  def correct_guess?(guess)
-    @guessed_letters.append(guess)
-    @mystery_word.include?(guess)
-  end
-
-  def display_results
+  def display_results(correct_guess)
+    message = correct_guess ? "Right!" : "Wrong!"
+    puts "You were #{message}"
     puts "guesses left #{@guesses_left}"
     puts @mystery_word.tr("^#{@guessed_letters}", '*')
   end
