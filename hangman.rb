@@ -17,14 +17,13 @@ class Game
   def load_new_game
     @guesses_left = @max_guesses
     @mystery_word = generate_new_word
-    puts @mystery_word
-    @available_letters = ('a'..'z').to_a
+    @available_letters = ('A'..'Z').to_a
     @guessed_letters = []
   end
 
   def generate_new_word
     loop do
-      word = File.readlines('google-10000-english-no-swears.txt').sample.chomp
+      word = File.readlines('google-10000-english-no-swears.txt').sample.chomp.upcase
       return word if word.length >= 5 && word.length <= 12
     end
   end
@@ -50,7 +49,7 @@ class Game
   def player_guess
     loop do
       puts 'Guess a letter'
-      guess = gets.chomp
+      guess = gets.chomp.upcase
       if guess.length == 1 && @available_letters.include?(guess)
         @available_letters.delete(guess)
         return guess
