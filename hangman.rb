@@ -17,13 +17,14 @@ class Game
   def load_new_game
     @guesses_left = @max_guesses
     @mystery_word = generate_new_word
+    puts @mystery_word
     @available_letters = ('a'..'z').to_a
     @guessed_letters = []
   end
 
   def generate_new_word
     loop do
-      word = File.readlines('google-10000-english-no-swears.txt').sample
+      word = File.readlines('google-10000-english-no-swears.txt').sample.chomp
       return word if word.length >= 5 && word.length <= 12
     end
   end
@@ -58,10 +59,23 @@ class Game
   end
 
   def display_results(correct_guess)
-    message = correct_guess ? "Right!" : "Wrong!"
-    puts "You were #{message}"
-    puts "guesses left #{@guesses_left}"
-    puts @mystery_word.tr("^#{@guessed_letters}", '*')
+    unless player_won?
+      message = correct_guess ? 'Right!' : 'Wrong!'
+      puts "You were #{message}"
+      puts "guesses left #{@guesses_left}"
+      puts @mystery_word.tr("^#{@guessed_letters}", '*')
+      return
+    end
+    puts 'YOU DID IT!'
+  end
+
+  def player_won?
+    word_holder = @mystery_word
+    @guessed_letters.each do |letter|
+      word_holder = word_holder.tr(letter, '')
+    end
+    @guesses_left = 0 if word_holder.empty?
+    word_holder.empty?
   end
 end
 
