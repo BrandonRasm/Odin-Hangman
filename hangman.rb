@@ -42,7 +42,7 @@ class Game
   def play_round
     guess = player_guess
     @guesses_left -= 1 unless correct_guess?(guess)
-    puts "guesses left #{@guesses_left}"
+    display_results
   end
 
   def player_guess
@@ -63,8 +63,8 @@ class Game
 
   def display_results
     puts "guesses left #{@guesses_left}"
-    puts @mystery_word.
-    end
+    puts @mystery_word.tr("^#{@guessed_letters}", '*')
+  end
 end
 
 game = Game.new
